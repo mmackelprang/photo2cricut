@@ -9,7 +9,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageOps
 
-IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
+IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".webp", ".tif", ".tiff"}
 
 
 @dataclass
@@ -31,7 +31,16 @@ def load_images(directory: str) -> list[LoadedImage]:
             continue
         path = os.path.join(directory, name)
         try:
-            pil = ImageOps.exif_transpose(Image.open(path)).convert("RGB")
+            opened = ImageOps.exif_transpose(Image.open(path))
+            if opened.mode in ("RGBA", "LA", "PA"):
+                # Composite onto white instead of letting .convert("RGB") drop
+                # alpha — transparent pixels usually carry black RGB, which would
+                # otherwise become noise through the threshold.
+                bg = Image.new("RGBA", opened.size, (255, 255, 255, 255))
+                bg.alpha_composite(opened.convert("RGBA"))
+                pil = bg.convert("RGB")
+            else:
+                pil = opened.convert("RGB")
         except Exception as e:  # corrupt/unreadable
             print(f"warning: skipping unreadable image {path}: {e}")
             continue

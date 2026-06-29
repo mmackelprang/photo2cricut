@@ -1,6 +1,7 @@
 import os
 import cv2
 import pytest
+from PIL import Image
 from photo2cricut.testimage import make_portrait
 from photo2coloringbook.ingest import load_images, LoadedImage
 
@@ -31,3 +32,13 @@ def test_not_a_directory_raises(tmp_path):
     f.write_bytes(b"not an image")
     with pytest.raises(NotADirectoryError):
         load_images(str(f))
+
+
+def test_rgba_transparency_composites_to_white(tmp_path):
+    # Fully transparent PNG whose RGB channels are black (the common encoder
+    # default). It must load as white, not black — otherwise transparent regions
+    # become noise through the threshold.
+    Image.new("RGBA", (8, 8), (0, 0, 0, 0)).save(str(tmp_path / "trans.png"))
+    loaded = load_images(str(tmp_path))
+    assert len(loaded) == 1
+    assert (loaded[0].bgr == 255).all()

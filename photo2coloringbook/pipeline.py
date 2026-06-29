@@ -27,6 +27,10 @@ class BookOptions:
 
 def convert_book(input_dir: str, output_pdf: str, opt: BookOptions | None = None) -> dict:
     opt = opt or BookOptions()
+    if opt.paper != "letter":
+        # Guard the hardcoded LETTER_IN below: other sizes (A4, ...) arrive in
+        # Phase 3 and must route real dimensions, not silently produce Letter.
+        raise ValueError(f"paper={opt.paper!r} not yet supported; use 'letter'")
     page_w = int(LETTER_IN[0] * opt.dpi)
     page_h = int(LETTER_IN[1] * opt.dpi)
     margin = int(opt.margin_in * opt.dpi)

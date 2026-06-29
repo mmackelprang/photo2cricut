@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+
+# Project outputs (keep examples/ tracked but ignore generated art)
+examples/*.jpg
+examples/*.png
+examples/*.svg
+!examples/.gitkeep
+
+# Scratch UAT / diagnosis artifacts (generated)
+examples/uat/
+
+# Local sample inputs/outputs (large binaries; kept on disk, not tracked)
+/*.jpg
+/*.png
+/*.svg
+/*.pdf
+images/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

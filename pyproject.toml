@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "photo2cricut"
+version = "0.2.0"
+description = "Turn JPG photos into Cricut-ready single-line (centerline) SVG line art."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "YOUR NAME" }]
+keywords = ["cricut", "pen-plotter", "svg", "line-art", "vectorize", "centerline"]
+dependencies = [
+    "numpy>=1.23",
+    "opencv-python-headless>=4.7",
+    "scikit-image>=0.20",
+    "sknw>=0.15",
+    "vpype>=1.14",
+    "Pillow>=9.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "cairosvg>=2.5"]  # cairosvg only needed to render PNG previews
+
+[project.scripts]
+photo2cricut = "photo2cricut.cli:main"
+photo2cricut-validate = "photo2cricut.validate:main"
+photo2cricut-makeimg = "photo2cricut.testimage:main"
+
+[tool.setuptools]
+packages = ["photo2cricut"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

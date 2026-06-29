@@ -174,5 +174,19 @@ photo2cricut/
 - **PNG preview tools fail** — `cairosvg` (and a system cairo lib) are only needed for
   previews, not for producing the SVG.
 
+## photo2coloringbook (sibling tool)
+
+Turn a **folder of photos** into a print-ready **US-Letter PDF coloring book**
+(bold black-on-white line art, one page per photo + a title cover).
+
+```bash
+pip install -e ".[coloringbook]"
+photo2coloringbook ./photos book.pdf --title "Our Family"
+```
+
+Phase 1 ships the local, no-GPU `cv` backend. The likeness-first neural
+`contour` backend and `rembg` background removal (`--bg auto`) arrive in
+Phase 2 (`pip install -e ".[gpu]"`, run on a CUDA GPU).
+
 ## License
 MIT — see `LICENSE` (replace `YOUR NAME`).

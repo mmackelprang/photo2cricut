@@ -6,6 +6,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `photo2cricut` converts a JPG/PNG photo into a **Cricut-ready single-line (centerline) SVG** for the Cricut's Draw/Pen mode (a slow pen plotter). The defining constraint: produce **centerlines** (one pen stroke per line) rather than **outlines** (which double every line into a closed loop and look bad with a pen). Everything runs **fully local** — no API keys, no web service. Read `README.md` for the user-facing tuning guide; this file is the developer map.
 
+## Second package in this repo: `photo2coloringbook/`
+
+This repo now hosts a **second, independent sibling tool** alongside `photo2cricut`:
+`photo2coloringbook/` turns a **folder of photos** into a print-ready **US-Letter PDF
+coloring book** — bold **black-on-white** line art (the opposite of centerlines: closed
+outlines enclosing fillable regions), one page per photo plus a title cover. Console
+entry point: `photo2coloringbook` (also runnable as `python -m photo2coloringbook.cli`).
+
+- **Pipeline** (linear, in `photo2coloringbook/`): `ingest → isolate → stylize → post →
+  layout → book`, orchestrated by `pipeline.convert_book(input_dir, output_pdf, BookOptions)`.
+- **Phase 1 (shipped):** the no-GPU `cv` backend (OpenCV adaptive threshold) with `keep`
+  (no-op) isolation — the whole flow runs with zero models/GPU.
+- **Phase 2 (not yet built):** the GPU `contour` neural backend and `rembg` background
+  removal (`--bg auto`/`remove`). Those code paths raise clear `NotImplementedError`s
+  today (never silent no-ops); they live behind the `[gpu]` optional-dependency extra.
+- **Deps are isolated:** coloring-book deps (`reportlab`, `Pillow>=10.1`) live in the
+  `coloringbook` extra; `photo2cricut` stays lean (no torch). Tests use `pypdf` (dev extra)
+  and the same synthetic `photo2cricut.testimage.make_portrait` images — no real photos.
+- **Line-art convention everywhere:** grayscale uint8, **black lines = 0, white = 255**.
+- Coloring-book tests live in `tests/coloringbook/`; pytest runs with
+  `--import-mode=importlib` so both suites can share test-file basenames.
+
 ## Commands
 
 Setup (creates `.venv`, installs editable, runs a smoke test):

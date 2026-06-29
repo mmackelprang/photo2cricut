@@ -34,7 +34,7 @@ package, and runs a smoke test (generate a test image → convert → validate).
 
 **Linux / macOS**
 ```bash
-git clone https://github.com/YOUR_USERNAME/photo2cricut.git
+git clone https://github.com/mmackelprang/photo2cricut.git
 cd photo2cricut
 ./install.sh            # or: ./install.sh --dev   (also installs + runs tests)
 source .venv/bin/activate
@@ -42,7 +42,7 @@ source .venv/bin/activate
 
 **Windows (PowerShell)**
 ```powershell
-git clone https://github.com/YOUR_USERNAME/photo2cricut.git
+git clone https://github.com/mmackelprang/photo2cricut.git
 cd photo2cricut
 ./install.ps1           # or: ./install.ps1 -Dev
 .\.venv\Scripts\Activate.ps1
@@ -189,4 +189,4 @@ Phase 1 ships the local, no-GPU `cv` backend. The likeness-first neural
 Phase 2 (`pip install -e ".[gpu]"`, run on a CUDA GPU).
 
 ## License
-MIT — see `LICENSE` (replace `YOUR NAME`).
+MIT — see `LICENSE`.

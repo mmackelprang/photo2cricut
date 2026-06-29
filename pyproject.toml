@@ -9,7 +9,7 @@ description = "Turn JPG photos into Cricut-ready single-line (centerline) SVG li
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-authors = [{ name = "YOUR NAME" }]
+authors = [{ name = "Mark Mackelprang" }]
 keywords = ["cricut", "pen-plotter", "svg", "line-art", "vectorize", "centerline"]
 dependencies = [
     "numpy>=1.23",

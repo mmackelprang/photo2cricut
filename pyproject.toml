@@ -21,15 +21,18 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7", "cairosvg>=2.5"]  # cairosvg only needed to render PNG previews
+dev = ["pytest>=7", "cairosvg>=2.5", "pypdf>=4.0", "reportlab>=4.0", "Pillow>=10.1"]
+coloringbook = ["reportlab>=4.0", "Pillow>=10.1"]
+gpu = ["torch", "torchvision", "rembg", "onnxruntime"]  # Phase 2 backend
 
 [project.scripts]
 photo2cricut = "photo2cricut.cli:main"
 photo2cricut-validate = "photo2cricut.validate:main"
 photo2cricut-makeimg = "photo2cricut.testimage:main"
+photo2coloringbook = "photo2coloringbook.cli:main"
 
 [tool.setuptools]
-packages = ["photo2cricut"]
+packages = ["photo2cricut", "photo2coloringbook", "photo2coloringbook.stylize"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

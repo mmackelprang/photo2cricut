@@ -15,11 +15,13 @@ def clean(lineart_gray: np.ndarray, line_weight: int = 3, despeckle: int = 12) -
 
     if despeckle > 0:
         n, labels, stats, _ = cv2.connectedComponentsWithStats(mask, connectivity=8)
-        keep = np.zeros_like(mask)
-        for i in range(1, n):
-            if stats[i, cv2.CC_STAT_AREA] > despeckle:
-                keep[labels == i] = 255
-        mask = keep
+        # Vectorized despeckle: build a per-label keep/drop lookup by area and
+        # index it with the label image in one pass. O(pixels), not the
+        # O(components x pixels) of a Python per-component loop — the latter took
+        # ~90s/image on a full-resolution photo.
+        keep_label = stats[:, cv2.CC_STAT_AREA] > despeckle
+        keep_label[0] = False  # label 0 is the background
+        mask = (keep_label[labels] * np.uint8(255)).astype(np.uint8)
 
     if line_weight > 1:
         tk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (line_weight, line_weight))

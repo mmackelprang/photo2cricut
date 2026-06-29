@@ -179,14 +179,22 @@ photo2cricut/
 Turn a **folder of photos** into a print-ready **US-Letter PDF coloring book**
 (bold black-on-white line art, one page per photo + a title cover).
 
+**Local, no-GPU backend** (`cv`):
 ```bash
 pip install -e ".[coloringbook]"
 photo2coloringbook ./photos book.pdf --title "Our Family"
 ```
 
-Phase 1 ships the local, no-GPU `cv` backend. The likeness-first neural
-`contour` backend and `rembg` background removal (`--bg auto`) arrive in
-Phase 2 (`pip install -e ".[gpu]"`, run on a CUDA GPU).
+**Quality backend (GPU).** The likeness-first `contour` backend (a neural
+line-art model) plus `rembg` background removal run on a CUDA box:
+```bash
+scripts/setup-appserver.sh           # bootstraps pip + torch(cu121) + models
+photo2coloringbook ./photos book.pdf --backend contour --bg auto --title "Our Family"
+```
+
+`--bg auto` removes busy backgrounds when a face is detected. Needs ~3.5 GB
+VRAM (the model's short side is capped at 2048 px); if hair over-inks on
+harsh-lit shots, raise the `ContourStylizer` `ink_level`.
 
 ## License
 MIT — see `LICENSE`.

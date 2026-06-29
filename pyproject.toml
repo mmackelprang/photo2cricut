@@ -36,3 +36,6 @@ packages = ["photo2cricut", "photo2coloringbook", "photo2coloringbook.stylize"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# importlib mode lets the two suites share test-file basenames
+# (tests/test_pipeline.py and tests/coloringbook/test_pipeline.py) without collision.
+addopts = "--import-mode=importlib"

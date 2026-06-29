@@ -17,6 +17,7 @@ examples/*.svg
 
 # Scratch UAT / diagnosis artifacts (generated)
 examples/uat/
+examples/uat-phase2/
 
 # Local sample inputs/outputs (large binaries; kept on disk, not tracked)
 /*.jpg

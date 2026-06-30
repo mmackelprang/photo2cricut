@@ -15,7 +15,7 @@ from controlnet_aux import LineartDetector
 
 
 class ContourStylizer:
-    def __init__(self, device: str | None = None, ink_level: int = 65,
+    def __init__(self, device: str | None = None, ink_level: int = 110,
                  max_resolution: int = 2048):
         import torch
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")

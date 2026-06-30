@@ -22,6 +22,8 @@ def build_parser() -> argparse.ArgumentParser:
                     help="line-art backend (contour needs the [gpu] extra, Phase 2)")
     ap.add_argument("--line-weight", type=int, default=3, dest="line_weight",
                     help="stroke thickness in px")
+    ap.add_argument("--ink-level", type=int, default=110, dest="ink_level",
+                    help="contour backend: higher = less ink / cleaner faces (drops soft shading)")
     ap.add_argument("--paper", choices=["letter"], default="letter", help="page size")
     return ap
 
@@ -29,7 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv=None) -> int:
     args = build_parser().parse_args(argv)
     opt = BookOptions(title=args.title, bg=args.bg, backend=args.backend,
-                      line_weight=args.line_weight, paper=args.paper)
+                      line_weight=args.line_weight, ink_level=args.ink_level, paper=args.paper)
     try:
         stats = convert_book(args.input_dir, args.output, opt)
     except (FileNotFoundError, NotADirectoryError, RuntimeError, ValueError,

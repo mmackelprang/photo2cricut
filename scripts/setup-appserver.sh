@@ -17,7 +17,7 @@ python /tmp/get-pip.py
 # Torch with the CUDA 12.1 wheels (NOT on PyPI -- needs the dedicated index).
 pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cu121
 pip install controlnet_aux==0.0.10 rembg==2.0.76 onnxruntime==1.27.0
-pip install -e .
+pip install -e '.[coloringbook]'   # base deps + reportlab/Pillow (book.py needs reportlab)
 
 echo ">> Verifying CUDA + GPU..."
 python -c "import torch; print('cuda', torch.cuda.is_available(), \

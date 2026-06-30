@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import cv2
 import numpy as np
+import torch
 from PIL import Image
 from controlnet_aux import LineartDetector
 
@@ -17,7 +18,6 @@ from controlnet_aux import LineartDetector
 class ContourStylizer:
     def __init__(self, device: str | None = None, ink_level: int = 110,
                  max_resolution: int = 2048):
-        import torch
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         # load once; reused across every image in a convert_book run
         self.det = LineartDetector.from_pretrained("lllyasviel/Annotators").to(self.device)

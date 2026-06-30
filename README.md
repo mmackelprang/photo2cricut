@@ -193,8 +193,9 @@ photo2coloringbook ./photos book.pdf --backend contour --bg auto --title "Our Fa
 ```
 
 `--bg auto` removes busy backgrounds when a face is detected. Needs ~3.5 GB
-VRAM (the model's short side is capped at 2048 px); if hair over-inks on
-harsh-lit shots, raise the `ContourStylizer` `ink_level`.
+VRAM (the model's short side is capped at 2048 px). Tune `--ink-level`
+(default 110) per batch: **raise** (~130) to thin over-inked well-lit faces,
+**lower** (~90) for flat / washed-out photos where faces come out too sparse.
 
 ## License
 MIT — see `LICENSE`.

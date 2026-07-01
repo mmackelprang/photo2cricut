@@ -23,6 +23,7 @@ class BookOptions:
     bg: str = "keep"        # keep | auto | remove   (auto/remove: Phase 2)
     backend: str = "cv"     # cv | contour           (contour: Phase 2)
     line_weight: int = 3
+    ink_level: int = 110    # contour-only: higher = less ink (drops soft shading)
 
 
 def convert_book(input_dir: str, output_pdf: str, opt: BookOptions | None = None) -> dict:
@@ -35,7 +36,7 @@ def convert_book(input_dir: str, output_pdf: str, opt: BookOptions | None = None
     page_h = int(LETTER_IN[1] * opt.dpi)
     margin = int(opt.margin_in * opt.dpi)
 
-    stylizer = get_stylizer(opt.backend)
+    stylizer = get_stylizer(opt.backend, ink_level=opt.ink_level)
     images = load_images(input_dir)
 
     pages = [make_cover(opt.title, page_w, page_h)]

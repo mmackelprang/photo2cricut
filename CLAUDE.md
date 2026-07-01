@@ -18,9 +18,18 @@ entry point: `photo2coloringbook` (also runnable as `python -m photo2coloringboo
   layout → book`, orchestrated by `pipeline.convert_book(input_dir, output_pdf, BookOptions)`.
 - **Phase 1 (shipped):** the no-GPU `cv` backend (OpenCV adaptive threshold) with `keep`
   (no-op) isolation — the whole flow runs with zero models/GPU.
-- **Phase 2 (not yet built):** the GPU `contour` neural backend and `rembg` background
-  removal (`--bg auto`/`remove`). Those code paths raise clear `NotImplementedError`s
-  today (never silent no-ops); they live behind the `[gpu]` optional-dependency extra.
+- **Phase 2 (shipped):** the GPU `contour` neural backend (`stylize/contour.py` —
+  `controlnet_aux` `LineartDetector`, = Informative Drawings weights) and `rembg`
+  background removal (`--bg auto`/`remove` in `isolate.py`). The model emits soft
+  white-on-black; `to_lineart` inverts + binarizes (`ink_level`) and caps the short side
+  at 2048 px (6 GB VRAM ceiling). These live behind the `[gpu]` extra and are
+  **lazy-imported** — the base install and the dev-box suite never load torch; a missing
+  dep raises a clear `[gpu]`-extra `RuntimeError`. Set up on a CUDA host with
+  `scripts/setup-appserver.sh`, then run `--backend contour --bg auto`. Defaults stay
+  `backend="cv"`/`bg="keep"` so the base install works everywhere.
+- **Testing the GPU paths:** `contour`/`remove` tests `importorskip` their deps, so they
+  skip on the no-torch dev box and run only where `[gpu]` is installed (appserver). The
+  real quality validation is a manual appserver UAT.
 - **Deps are isolated:** coloring-book deps (`reportlab`, `Pillow>=10.1`) live in the
   `coloringbook` extra; `photo2cricut` stays lean (no torch). Tests use `pypdf` (dev extra)
   and the same synthetic `photo2cricut.testimage.make_portrait` images — no real photos.

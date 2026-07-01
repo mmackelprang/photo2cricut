@@ -8,11 +8,16 @@ from .cv import CvStylizer
 __all__ = ["Stylizer", "CvStylizer", "get_stylizer"]
 
 
-def get_stylizer(name: str) -> Stylizer:
+def get_stylizer(name: str, ink_level: int = 110) -> Stylizer:
     if name == "cv":
-        return CvStylizer()
+        return CvStylizer()  # ink_level is a contour-only knob; cv ignores it
     if name == "contour":
-        raise NotImplementedError(
-            "the 'contour' backend requires the [gpu] extra and arrives in Phase 2; "
-            "use --backend cv for now")
+        try:
+            from .contour import ContourStylizer
+        except ImportError as e:
+            raise RuntimeError(
+                "the 'contour' backend needs the [gpu] extra "
+                "(pip install '.[gpu]': torch, controlnet_aux). "
+                f"Underlying import error: {e}") from e
+        return ContourStylizer(ink_level=ink_level)
     raise ValueError(f"unknown backend: {name!r} (use 'cv' or 'contour')")

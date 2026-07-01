@@ -13,6 +13,7 @@ venv/
 examples/*.jpg
 examples/*.png
 examples/*.svg
+examples/*.pdf
 !examples/.gitkeep
 
 # Scratch UAT / diagnosis artifacts (generated)

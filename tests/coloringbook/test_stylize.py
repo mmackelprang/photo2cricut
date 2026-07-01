@@ -12,11 +12,6 @@ def test_cv_stylizer_returns_black_on_white_gray():
     assert (out == 0).any() and (out == 255).any()  # has lines and paper
 
 
-def test_contour_backend_not_yet_available():
-    with pytest.raises(NotImplementedError):
-        get_stylizer("contour")
-
-
 def test_unknown_backend_raises():
     with pytest.raises(ValueError):
         get_stylizer("bogus")
